@@ -1,0 +1,37 @@
+REGISTRY_URL=docker-registry.hexun.com
+IMAGE_NAME=hexunzq/zbindex
+IMAGE_TAG=1.0.1
+CONTAINER_NAME=zbindex
+echo '>>> remove old containers'
+if docker ps -a | grep $IMAGE_NAME; then
+  docker rm -f $(docker ps -a | grep $IMAGE_NAME | awk '{print $1}')
+fi
+echo '>>> remove old images'
+if docker images -a | grep $IMAGE_NAME; then
+  docker rmi -f $(docker images -a | grep $IMAGE_NAME | awk '{print $3}')
+fi
+echo '>>> build new image'
+docker build -t $REGISTRY_URL/$IMAGE_NAME:$IMAGE_TAG .
+echo '>>> push image to registry'
+docker push $REGISTRY_URL/$IMAGE_NAME:$IMAGE_TAG
+echo '>>> build end'
+
+
+
+
+REGISTRY_URL=docker-registry.hexun.com
+IMAGE_NAME=hexunzq/zbindex
+IMAGE_TAG=1.0.1
+CONTAINER_NAME=zbindex
+HOST_IP=10.4.13.3
+HOST_PORT=2375
+echo '>>> remove old containers on' $HOST_IP 
+if docker -H $HOST_IP:$HOST_PORT ps -a | grep $IMAGE_NAME; then
+  docker -H $HOST_IP:$HOST_PORT rm -f $(docker -H $HOST_IP:$HOST_PORT ps -a | grep $IMAGE_NAME | awk '{print $1}')
+fi
+echo '>>> remove old images on' $HOST_IP
+if docker -H $HOST_IP:$HOST_PORT images -a | grep $IMAGE_NAME; then
+  docker -H $HOST_IP:$HOST_PORT rmi -f $(docker -H $HOST_IP:$HOST_PORT images -a | grep $IMAGE_NAME | awk '{print $3}')
+fi
+echo '>>> run new container on' $HOST_IP
+docker -H $HOST_IP:$HOST_PORT run --net=host --name $CONTAINER_NAME --restart=always -d -p 8085:8085 --privileged -v /opt/docker/zhiboindex/tomcat/logs:/usr/local/tomcat/logs -v /opt/docker/zhiboindex/tomcat/webapps/livechat/cms:/usr/local/tomcat/webapps/livechat/cms -v /opt/docker/zhiboindex/tomcat/webapps/livechat/fragment:/usr/local/tomcat/webapps/livechat/fragment $REGISTRY_URL/$IMAGE_NAME:$IMAGE_TAG

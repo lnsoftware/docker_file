@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<Server port="8005" shutdown="SHUTDOWN">
+  <Listener className="org.apache.catalina.startup.VersionLoggerListener" />
+
+  <Listener className="org.apache.catalina.core.AprLifecycleListener" SSLEngine="on" />
+
+  <Listener className="org.apache.catalina.core.JasperListener" />
+
+  <Listener className="org.apache.catalina.core.JreMemoryLeakPreventionListener" />
+  <Listener className="org.apache.catalina.mbeans.GlobalResourcesLifecycleListener" />
+  <Listener className="org.apache.catalina.core.ThreadLocalLeakPreventionListener" />
+
+  <GlobalNamingResources>
+
+    <Resource name="UserDatabase" auth="Container"
+              type="org.apache.catalina.UserDatabase"
+              description="User database that can be updated and saved"
+              factory="org.apache.catalina.users.MemoryUserDatabaseFactory"
+              pathname="conf/tomcat-users.xml" />
+  </GlobalNamingResources>
+
+
+  <Service name="Catalina">
+
+   
+    <Connector port="8085"
+   	protocol="org.apache.coyote.http11.Http11NioProtocol" 	
+        maxThreads="10000" 	
+        connectionTimeout="20000" 	
+        acceptCount="8000" 	
+        redirectPort="8443" 	
+        disableUploadTimeout="false" 	
+        URIEncoding="UTF-8" 
+    />
+    
+    <Connector port="8009" protocol="AJP/1.3" redirectPort="8443" />
+
+
+    <Engine name="Catalina" defaultHost="localhost">
+
+      
+      <Realm className="org.apache.catalina.realm.LockOutRealm">
+      
+        <Realm className="org.apache.catalina.realm.UserDatabaseRealm"
+               resourceName="UserDatabase"/>
+      </Realm>
+
+      <Host name="zb.hexun.com"
+            unpackWARs="true" autoDeploy="true">
+        <Context docBase="livechat" path="" reloadable="true" />
+        <Valve className="org.apache.catalina.valves.AccessLogValve"
+              directory="logs/ZhiBoLog"
+              prefix="" suffix="_access_log"   
+              pattern="%{yyyy-MM-dd HH:mm:ss}t zb.hexun.com %p %h %D %m %U %q %s 0 0 &quot;%{User-Agent}i&quot; &quot;%{Referer}i&quot;"
+              fileDateFormat="yyyy-MM-dd_HH"/> 
+     </Host>
+    
+	
+    </Engine>
+  </Service>
+</Server>
