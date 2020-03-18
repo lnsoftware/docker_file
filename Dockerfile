@@ -1,7 +1,7 @@
-#Ö¤È¯×ÊÑ¶ÊÂÒµ²¿Ö±²¥Ê×Ò³Õ¾µã¾µÏñ
+#Ö¤È¯ï¿½ï¿½Ñ¶ï¿½ï¿½Òµï¿½ï¿½Ö±ï¿½ï¿½ï¿½ï¿½Ò³Õ¾ï¿½ã¾µï¿½ï¿½
 #Version: 1.0.0
-#Author: zhangyang
-#»ù´¡¾µÏñ°æ±¾£ºhexunzq/javaweb:1.0
+#Author: zhangyang-sb
+#ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½æ±¾ï¿½ï¿½hexunzq/javaweb:1.0
 FROM docker-registry.hexun.com/hexunzq/javaweb:1.0
 MAINTAINER zhangyang "zhangyang@staff.hexun.com"
 ENV ZHIBOINDEXPATH /usr/local/tomcat/webapps/livechat/
